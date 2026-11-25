@@ -33,8 +33,8 @@
     let o = `<svg viewBox="0 0 ${w} ${h + 26}" role="img">`;
     [0, .5, 1].forEach(t => { const yy = 10 + (h - 10) * (1 - t); o += `<line x1="40" x2="${w}" y1="${yy}" y2="${yy}" stroke="rgba(255,255,255,.07)"/><text x="36" y="${yy + 4}" text-anchor="end" fill="#8f99b3" font-size="10">${money(max * t)}</text>`; });
     const pts = values.map((v, i) => `${x(i)},${y(v)}`).join(' ');
-    o += `<defs><linearGradient id="g" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#34d399" stop-opacity=".35"/><stop offset="1" stop-color="#34d399" stop-opacity="0"/></linearGradient></defs>`;
-    o += `<polygon points="${x(0)},${h} ${pts} ${x(n - 1)},${h}" fill="url(#g)"/><polyline points="${pts}" fill="none" stroke="#34d399" stroke-width="2"/>`;
+    o += `<defs><linearGradient id="g" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#fbbf24" stop-opacity=".35"/><stop offset="1" stop-color="#fbbf24" stop-opacity="0"/></linearGradient></defs>`;
+    o += `<polygon points="${x(0)},${h} ${pts} ${x(n - 1)},${h}" fill="url(#g)"/><polyline points="${pts}" fill="none" stroke="#fbbf24" stroke-width="2"/>`;
     labels.forEach((l, i) => { if (l.endsWith('-01')) o += `<text x="${x(i)}" y="${h + 18}" text-anchor="middle" fill="#8f99b3" font-size="10">${l.slice(0, 4)}</text>`; });
     values.forEach((v, i) => { o += `<circle cx="${x(i)}" cy="${y(v)}" r="7" fill="transparent" data-t="${labels[i]}: ${money(v)}"/>`; });
     el.innerHTML = o + '</svg>';
