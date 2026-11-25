@@ -2,6 +2,8 @@
 
 Analysis of 100,000 e-commerce orders (`Amazon.csv`, January 2020 to December 2024) with Python and SQL: where the order value comes from, how it moves over time, and how much is lost to cancelled and returned orders.
 
+**Live explorer:** https://hassan3443.github.io/customer-sales-analysis/ (filter by year, category, country and status; RFM segments; discount analysis)
+
 ## Key findings
 
 All numbers come from `analysis.py` and can be reproduced by running it.
@@ -11,6 +13,13 @@ All numbers come from `analysis.py` and can be reproduced by running it.
 - **No category stands out.** The six categories sit between 15.2M and 15.6M, a spread of 2.8% between the top (Electronics) and the bottom (Home & Kitchen).
 - **Monthly order value is stable.** It averages 1.53M, with a low of 1.34M (February 2020) and a high of 1.64M (May 2024).
 - **Cards are the main payment method.** Credit card 35.0% and debit card 20.0% of orders, then UPI 15.1% and Amazon Pay 15.0%. Cash on delivery is 4.9%.
+
+### Customers and discounts
+
+- **43,233 customers placed the 100,000 orders.** 66.0% of them have more than one order that was not cancelled or returned.
+- **RFM segmentation** (recency, frequency, order value, scored 1 to 5 by rank on valid orders): Champions are 22% of customers (9,488) and 36% of order value. 9,907 customers fall in the Lost segment, whose last order was about 3.4 years before the end of the data.
+- **Discounts did not lift basket size.** Average quantity is about 3 items at every discount level (0% to 30%), so the average order value falls from $988 at no discount to $727 at 30%. This is an association in this dataset, not proof of cause.
+- **Quantity is evenly spread** from 1 to 5 items (about 20% each), and order counts per weekday and per year are very even too. The explorer shows these distributions as they are.
 
 ## Data checks
 
@@ -31,6 +40,10 @@ Order values include all order statuses (Delivered, Shipped, Pending, Returned, 
 ```
 Amazon.csv            Order data (100,000 rows)
 analysis.py           pandas analysis, writes charts to figures/ (no database needed)
+sales_lib.py          RFM, discount and aggregation functions (tested)
+build_site_data.py    Writes docs/summary.json for the explorer
+docs/                 Live explorer (static HTML, CSS, JS) served by GitHub Pages
+tests/                pytest tests
 analysis.sql          The same questions as MySQL queries
 analysis_mysql.py     Optional: run the queries against MySQL and chart the result
 figures/              Generated charts
@@ -40,8 +53,12 @@ figures/              Generated charts
 
 ```bash
 pip install -r requirements.txt
-python analysis.py
+python analysis.py            # charts and printed numbers
+python build_site_data.py    # rebuild docs/summary.json
+pip install -r requirements-dev.txt && pytest
 ```
+
+To open the explorer locally: `python -m http.server --directory docs`, then visit http://localhost:8000.
 
 ### Optional: MySQL version
 
